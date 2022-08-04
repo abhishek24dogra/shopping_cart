@@ -7,11 +7,13 @@ const ShoppingList = () => {
 
     const [list, setList] = useState([])
     const [cart, setCart] = useState([])
+    const[id, setId]=useState(0)
+    const[total, setTotal]=useState("")
 
     //Getting List from API
     useEffect(() => {
 
-        axios.get('https://fakestoreapi.com/products?limit=10')
+        axios.get('https://fakestoreapi.com/products?limit=20')
             .then((response) => {
                 setList(response.data)
             })
@@ -20,12 +22,15 @@ const ShoppingList = () => {
             })
     }, [])
     
+    
     const clicktoCart=(e)=>{
-        console.log(e.target.value, e.target.name)
-        const cartItem={id:e.target.id, title:e.target.name, price:e.target.value}
-        console.log(cartItem)
+        setId(id+1)
+        const cartItem={id:id, title:e.target.name, price:e.target.value}
+        console.log(id)
+        setTotal(Number(total+(Number(e.target.value))))
+        console.log(total)
         setCart(prev =>([...prev, cartItem]))
-        //Cart();
+        
     }
 
     const dispatchUserEvent = (action, payload) => {
@@ -36,7 +41,8 @@ const ShoppingList = () => {
             case "DELETE":
                 console.log(payload.id)
                 const userList = cart.filter((item) => item.id !== payload.id);
-                
+                setTotal((total-Number(payload.price)))
+                console.log(total)
                 setCart(userList);
 
                 return;
@@ -46,7 +52,7 @@ const ShoppingList = () => {
     }
 
     return (
-        <div>
+        <div className="shop">
             <div className="List">
                 <table>
                     <thead>
@@ -69,9 +75,10 @@ const ShoppingList = () => {
                 </table>
             </div>
 
-            <Context.Provider value={{ list, cart, dispatchUserEvent }}>
+            <Context.Provider value={{ list, cart, dispatchUserEvent, total }}>
                  <Cart />
             </Context.Provider>
+            <p className="total">Total Price : {total}</p>
         </div>
     );
 };

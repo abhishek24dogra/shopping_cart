@@ -12,8 +12,8 @@ const Cart = () => {
     // }
 
     return ( 
-        <div>
-            <div className="List">
+        <div className="cart">
+            <div >
                 <table>
                     <thead>
                         <th>Name</th>
@@ -22,26 +22,21 @@ const Cart = () => {
                     </thead>
                     {cart.map((item, key) => {
                         return (
+                            
                             <tbody >
                                 
                                 <td>{item.title}</td>
                                 <td>{item.price}</td>
                                 <td><button id={item.id} name={item.title} value={item.price}
-                                onClick={()=>dispatchUserEvent("DELETE", {id: item.id})}>Delete</button></td>
+                                onClick={()=>dispatchUserEvent("DELETE", {id: item.id, price:item.price})}>Delete</button></td>
                             </tbody>
+                            
+                            
                         )
                     })}
                 </table>
             </div>
             </div>
-        // {/* <div>
-        //     <p>Table</p>
-
-        //     <input type="text" name="id" id="id" value={item.id} onChange= {handleOnChange} />
-        //     <input type="text" name="name" id="name" value={item.name} onChange= {handleOnChange} />
-        //     <input type="text" name="price" id="price" value={item.price} onChange= {handleOnChange} />
-        //     <button onClick={()=> dispatchUserEvent("ADD", {newUser : item})}> ADD </button>
-        // </div> */}
      );
     }
 

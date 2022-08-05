@@ -23,7 +23,7 @@ const Cart = () => {
                     {cart.map((item, key) => {
                         return (
                             
-                            <tbody >
+                            <tbody key={item.id}>
                                 
                                 <td>{item.title}</td>
                                 <td>{item.price}</td>

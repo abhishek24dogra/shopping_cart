@@ -26,7 +26,7 @@ const ShoppingList = () => {
     const clicktoCart=(e)=>{
         setId(id+1)
         const cartItem={id:id, title:e.target.name, price:e.target.value}
-        console.log(id)
+        
         setTotal(Number(total+(Number(e.target.value))))
         console.log(total)
         setCart(prev =>([...prev, cartItem]))
@@ -41,7 +41,7 @@ const ShoppingList = () => {
             case "DELETE":
                 console.log(payload.id)
                 const userList = cart.filter((item) => item.id !== payload.id);
-                setTotal((total-Number(payload.price)))
+                setTotal(Number(total-Number(payload.price)))
                 console.log(total)
                 setCart(userList);
 

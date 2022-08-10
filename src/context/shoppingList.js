@@ -1,58 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import axios from 'axios';
 import Context from "./Context";
 import Cart from "./Cart";
 
 const ShoppingList = () => {
 
-    const [list, setList] = useState([])
-    const [cart, setCart] = useState([])
-    const[id, setId]=useState(0)
-    const[total, setTotal]=useState("")
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "API-CALL":
+                return {
+                    state: action.value
+                };
+            case "ADD-CART":
+                return {
 
-    //Getting List from API
+                };
+            case "DELETE-CART":
+                return {
+
+                };
+            default:
+                return state;
+
+        }
+    }
+    //ALL REDUCER FUNCTIONS
+    const [list, reduceList] = useReducer(reducer, [])
+    const [cart, dispatch] = useReducer(reducer, 0)
+    console.log(list)
+
+    //GET CALL
     useEffect(() => {
-
         axios.get('https://fakestoreapi.com/products?limit=20')
             .then((response) => {
-                setList(response.data)
+                reduceList({ type: 'API-CALL', value: response.data })
+
             })
             .catch((err) => {
                 console.log(err)
             })
     }, [])
-    
-    
-    const clicktoCart=(e)=>{
-        setId(id+1)
-        const cartItem={id:id, title:e.target.name, price:e.target.value}
-        
-        setTotal(Number(total+(Number(e.target.value))))
-        console.log(total)
-        setCart(prev =>([...prev, cartItem]))
-        
-    }
-
-    const dispatchUserEvent = (action, payload) => {
-        switch (action) {
-            case "ADD":
-                setCart([...list, payload.newUser])
-                return;
-            case "DELETE":
-                console.log(payload.id)
-                const userList = cart.filter((item) => item.id !== payload.id);
-                setTotal(Number(total-Number(payload.price)))
-                console.log(total)
-                setCart(userList);
-
-                return;
-            default:
-                throw new Error();
-        }
-    }
 
     return (
-        <div className="shop">
+        <div>
+                    <div className="shop">
             <div className="List">
                 <table>
                     <thead>
@@ -61,27 +52,109 @@ const ShoppingList = () => {
                         <th>Price</th>
                         <th>Options</th>
                     </thead>
-                    {list.map((item, key) => {
+                    {list.state.map((item, key) => {
                         return (
                             <tbody key={item.id}>
                                 <td>{item.id}</td>
                                 <td>{item.title}</td>
                                 <td>{item.price}</td>
                                 <td><button id={item.id} name={item.title} value={item.price}
-                                onClick={clicktoCart}>Add to Cart</button></td>
+                                >Add to Cart</button></td>
                             </tbody>
                         )
                     })}
                 </table>
             </div>
-
-            <Context.Provider value={{ list, cart, dispatchUserEvent, total }}>
-                 <Cart />
-            </Context.Provider>
-            <p className="total">Total Price : {total}</p>
+            </div>
         </div>
+
     );
+
 };
+
+
+
+
+
+
+//WORKING PROGRAM WITHOUT REDUCER
+//     const [list, setList] = useState([])
+//     const [cart, setCart] = useState([])
+//     const[id, setId]=useState(0)
+//     const[total, setTotal]=useState("")
+
+//     //Getting List from API
+//     useEffect(() => {
+
+//         axios.get('https://fakestoreapi.com/products?limit=20')
+//             .then((response) => {
+//                 setList(response.data)
+//             })
+//             .catch((err) => {
+//                 console.log(err)
+//             })
+//     }, [])
+
+
+//     const clicktoCart=(e)=>{
+//         setId(id+1)
+//         const cartItem={id:id, title:e.target.name, price:e.target.value}
+
+//         setTotal(Number(total+(Number(e.target.value))))
+//         console.log(total)
+//         setCart(prev =>([...prev, cartItem]))
+
+//     }
+
+//     const dispatchUserEvent = (action, payload) => {
+//         switch (action) {
+//             case "ADD":
+//                 setCart([...list, payload.newUser])
+//                 return;
+//             case "DELETE":
+//                 console.log(payload.id)
+//                 const userList = cart.filter((item) => item.id !== payload.id);
+//                 setTotal(Number(total-Number(payload.price)))
+//                 console.log(total)
+//                 setCart(userList);
+
+//                 return;
+//             default:
+//                 throw new Error();
+//         }
+//     }
+
+//     return (
+        // <div className="shop">
+        //     <div className="List">
+        //         <table>
+        //             <thead>
+        //                 <th>ID</th>
+        //                 <th>Name</th>
+        //                 <th>Price</th>
+        //                 <th>Options</th>
+        //             </thead>
+        //             {list.map((item, key) => {
+        //                 return (
+        //                     <tbody key={item.id}>
+        //                         <td>{item.id}</td>
+        //                         <td>{item.title}</td>
+        //                         <td>{item.price}</td>
+        //                         <td><button id={item.id} name={item.title} value={item.price}
+        //                         onClick={clicktoCart}>Add to Cart</button></td>
+        //                     </tbody>
+        //                 )
+        //             })}
+        //         </table>
+        //     </div>
+
+//             <Context.Provider value={{ list, cart, dispatchUserEvent, total }}>
+//                  <Cart />
+//             </Context.Provider>
+//             <p className="total">Total Price : {total}</p>
+//         </div>
+//     );
+// };
 
 
 export default ShoppingList;

@@ -4,7 +4,7 @@ import Context from "./Context";
 
 const Cart = () => {
 
-    const {cart, dispatchUserEvent} = useContext(Context);
+    const {cart, dispatch, total} = useContext(Context);
     
 
     // const handleOnChange = (e) => {
@@ -12,6 +12,7 @@ const Cart = () => {
     // }
 
     return ( 
+        <Context.Consumer>
         <div className="cart">
             <div >
                 <table>
@@ -28,7 +29,7 @@ const Cart = () => {
                                 <td>{item.title}</td>
                                 <td>{item.price}</td>
                                 <td><button id={item.id} name={item.title} value={item.price}
-                                onClick={()=>dispatchUserEvent("DELETE", {id: item.id, price:item.price})}>Delete</button></td>
+                                onClick={()=>dispatch("DELETE", {id: item.id, price:item.price})}>Delete</button></td>
                             </tbody>
                             
                             
@@ -37,6 +38,7 @@ const Cart = () => {
                 </table>
             </div>
             </div>
+            </Context.Consumer>
      );
     }
 

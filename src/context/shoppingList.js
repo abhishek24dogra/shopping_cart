@@ -19,13 +19,12 @@ const ShoppingList = () => {
     const reducer = (state, action) => {
         switch (action.type) {
             case "ADD-CART":
-                return (
-                    {...state ,{ action.value}}
-                    
-                );
+                return {
+                     ...state,cart:[...state.cart, action.value],
+                }
             case "DELETE-CART":
                 return {
-
+                    ...state, cart:state.cart.filter(item=> item.id!== action.value.id)
                 };
             default:
                 return state;
@@ -34,7 +33,7 @@ const ShoppingList = () => {
     }
     //ALL STATE/REDUCER Functions
     const [list, setList] = useState([])
-    const [cart, dispatch] = useReducer(reducer, [])
+    const [cartList, dispatch] = useReducer(reducer, {cart:[], total:0 })
     // const [id, setId] = useState(0)
     const [total, setTotal] = useState("")
 
@@ -43,7 +42,7 @@ const ShoppingList = () => {
         setTimeout(getAPI, 500)
     }, [])
     
-    console.log(cart);
+    console.log(cartList.cart);
     return (
         <div>
             <div className="shop">
@@ -65,7 +64,7 @@ const ShoppingList = () => {
                                         <td>{item.title}</td>
                                         <td>{item.price}</td>
                                         <td><button 
-                                            onClick={() => {dispatch({type:"ADD-CART", value:{id:item.id, name:item.title, price: item.price}})}}>
+                                            onClick={() => {dispatch({type:"ADD-CART", value:{id:item.id, title:item.title, price: item.price}})}}>
                                             Add to Cart</button>
                                         </td>
                                     </tr>
@@ -74,8 +73,8 @@ const ShoppingList = () => {
                         })}
                     </table>
                 </div>
-                <Context.Provider value={{ cart, dispatch, total }}>
-                    {/* <Cart /> */}
+                <Context.Provider value={{ cartList, dispatch, total }}>
+                    <Cart />
                 </Context.Provider>
             </div>
         </div>

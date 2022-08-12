@@ -19,25 +19,34 @@ const ShoppingList = () => {
     const reducer = (state, action) => {
         switch (action.type) {
             case "ADD-CART":
-                const newCart=[...state.cart];
-                const cartItemIndex=newCart.findIndex(item=>item.id===action.value.id)
-                if(cartItemIndex<0){
-                    newCart.push({...action.value,quantity:1})
-                }else{
-                    const updatedItem=
-                        newCart[cartItemIndex]
-                    
+                const newCart = [...state.cart];
+                const cartItemIndex = newCart.findIndex(item => item.id === action.value.id)
+                if (cartItemIndex < 0) {
+                    newCart.push({ ...action.value, quantity: 1 })
+                } else {
+                    const updatedItem = newCart[cartItemIndex]
                     updatedItem.quantity++;
-                    newCart[cartItemIndex]=updatedItem;
+                    newCart[cartItemIndex] = updatedItem;
                     console.log(newCart)
                 }
                 return {
-                    
-                     ...state,cart:newCart,
+                    ...state, cart: newCart,
                 }
+
             case "DELETE-CART":
+                const removeCart = [...state.cart];
+                const removeItemIndex = removeCart.findIndex(item => item.id === action.value.id)
+                const removeItem = removeCart[removeItemIndex]
+                removeItem.quantity--;
+
+                if (removeItem.quantity <=0) {
+                    removeCart.splice( removeItemIndex, 1 )
+                } else {                                       
+                    removeCart[removeItemIndex] = removeItem;
+                    console.log(removeCart)
+                }
                 return {
-                    ...state, cart:state.cart.filter(item=> item.id!== action.value.id)
+                    ...state, cart: removeCart
                 };
             default:
                 return state;
@@ -46,7 +55,7 @@ const ShoppingList = () => {
     }
     //ALL STATE/REDUCER Functions
     const [list, setList] = useState([])
-    const [cartList, dispatch] = useReducer(reducer, {cart:[], total:0 })
+    const [cartList, dispatch] = useReducer(reducer, { cart: [], total: 0 })
     // const [id, setId] = useState(0)
     const [total, setTotal] = useState("")
 
@@ -55,8 +64,8 @@ const ShoppingList = () => {
     //     setTimeout(getAPI, 500)
     // }, [])
     getAPI();
-    
-    
+
+
     return (
         <div>
             <div className="shop">
@@ -77,8 +86,8 @@ const ShoppingList = () => {
                                         <td>{item.id}</td>
                                         <td>{item.title}</td>
                                         <td>{item.price}</td>
-                                        <td><button 
-                                            onClick={() => {dispatch({type:"ADD-CART", value:{id:item.id, title:item.title, price: item.price}})}}>
+                                        <td><button
+                                            onClick={() => { dispatch({ type: "ADD-CART", value: { id: item.id, title: item.title, price: item.price } }) }}>
                                             Add to Cart</button>
                                         </td>
                                     </tr>

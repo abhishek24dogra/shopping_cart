@@ -2,6 +2,7 @@ import React, { useEffect, useState, useReducer } from "react";
 import axios from 'axios';
 import Context from "./Context";
 import Cart from "./Cart";
+import './List.css';
 
 const ShoppingList = () => {
 
@@ -81,7 +82,7 @@ const ShoppingList = () => {
                         </thead>
                         {list.map((item, key) => {
                             return (
-                                <tbody key={item.id}>
+                                <tbody key={item.id} classname="row">
                                     <tr>
                                         <td>{item.id}</td>
                                         <td>{item.title}</td>

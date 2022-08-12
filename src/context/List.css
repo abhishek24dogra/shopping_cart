@@ -1,0 +1,37 @@
+body{
+    background-color: rgb(177, 140, 212);
+}
+
+.List{
+    max-width: 600px;
+    height: 1000px;
+    background-color: white;
+    border-radius: 10px;
+    display:flex;
+    margin: 20px 20px;
+
+}
+
+table{
+    width:auto;
+    max-height: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 20px 20px;
+
+}
+
+.row{
+    border: 1px solid;
+}
+thead{
+    background-color: rgb(187, 185, 185);
+}
+
+th, td{
+    margin-left: 2px;
+    margin-right: 2px;
+}

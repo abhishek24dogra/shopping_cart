@@ -20,6 +20,7 @@ const Cart = () => {
                         <tr>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>Quantity</th>
                         <th>Options</th>
                         </tr>
                     </thead>
@@ -28,9 +29,10 @@ const Cart = () => {
                             
                             <tbody key={item.id}>
                                <tr>
-                                
+                               
                                 <td>{item.title}</td>
                                 <td>{item.price}</td>
+                                <td>{item.quantity}</td>
                                 <td><button id={item.id} name={item.title} value={item.price}
                                 onClick={()=>dispatch({type:"DELETE-CART", value:{id: item.id, price:item.price}})}>Delete</button></td>
                                 </tr> 

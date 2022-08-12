@@ -19,8 +19,21 @@ const ShoppingList = () => {
     const reducer = (state, action) => {
         switch (action.type) {
             case "ADD-CART":
+                const newCart=[...state.cart];
+                const cartItemIndex=newCart.findIndex(item=>item.id===action.value.id)
+                if(cartItemIndex<0){
+                    newCart.push({...action.value,quantity:1})
+                }else{
+                    const updatedItem=
+                        newCart[cartItemIndex]
+                    
+                    updatedItem.quantity++;
+                    newCart[cartItemIndex]=updatedItem;
+                    console.log(newCart)
+                }
                 return {
-                     ...state,cart:[...state.cart, action.value],
+                    
+                     ...state,cart:newCart,
                 }
             case "DELETE-CART":
                 return {
@@ -38,11 +51,12 @@ const ShoppingList = () => {
     const [total, setTotal] = useState("")
 
     //GET CALL
-    useEffect(() => {
-        setTimeout(getAPI, 500)
-    }, [])
+    // useEffect(() => {
+    //     setTimeout(getAPI, 500)
+    // }, [])
+    getAPI();
     
-    console.log(cartList.cart);
+    
     return (
         <div>
             <div className="shop">
